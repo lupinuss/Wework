@@ -87,7 +87,7 @@ public class WeChatWork {
 
                 //5c:c9:99:34:48:f0
 
-                param.setResult(bssid);
+                param.setResult("5c:c9:99:34:48:f0");
             }
         });
 
@@ -98,7 +98,7 @@ public class WeChatWork {
 
                 //Yatsen
 
-                param.setResult("\""+ ssid +"\"");
+                param.setResult("\"Yatsen\"");
             }
         });
     }
@@ -184,20 +184,6 @@ public class WeChatWork {
         });
 
         XposedHelpers.findAndHookMethod("android.net.wifi.WifiInfo", classLoader, "getMacAddress", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                param.setResult("00-00-00-00-00-00-00-00");
-            }
-        });
-
-        XposedHelpers.findAndHookMethod("android.net.wifi.WifiInfo", classLoader, "getSSID", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                param.setResult("null");
-            }
-        });
-
-        XposedHelpers.findAndHookMethod("android.net.wifi.WifiInfo", classLoader, "getBSSID", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 param.setResult("00-00-00-00-00-00-00-00");
