@@ -20,6 +20,9 @@ public class Module implements IXposedHookLoadPackage {
         //com.tencent.wework
         if ("com.tencent.wework".equals(packetName) && "com.tencent.wework".equals(processName)){
 
+            RootCloak rootCloak = new RootCloak();
+            rootCloak.handleLoadPackage(lpparam);
+
             WeChatWork.hook();
 
         }
