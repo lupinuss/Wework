@@ -31,7 +31,7 @@
             android:value="30+" />
         <meta-data
             android:name="xposeddescription"
-            android:value="微信企业版打卡" />
+            android:value="不可描述" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -8,6 +8,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
@@ -20,6 +21,7 @@ import android.telephony.CellInfoGsm;
 import android.telephony.CellInfoLte;
 import android.telephony.CellInfoWcdma;
 import android.telephony.CellLocation;
+import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 
@@ -73,7 +75,7 @@ public class WeChatWork {
                 Log.e(TAG,"ssid = " + ssid);
 
                 wifi(classLoader,bssid,ssid);
-
+                connectivity(classLoader);
                 location(classLoader,Double.valueOf(latitude),Double.valueOf(longitude),lac,cid);
             }
         });
@@ -87,7 +89,7 @@ public class WeChatWork {
 
                 //5c:c9:99:34:48:f0
 
-                param.setResult("5c:c9:99:34:48:f0");
+                param.setResult(ssid);
             }
         });
 
@@ -98,7 +100,30 @@ public class WeChatWork {
 
                 //Yatsen
 
-                param.setResult("\"Yatsen\"");
+                param.setResult("\"" + ssid + "\"");
+            }
+        });
+
+        XposedHelpers.findAndHookMethod("android.net.NetworkInfo", classLoader, "getNetworkType", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                int networkType = 13;
+                param.setResult(networkType);
+            }
+        });
+    }
+
+    private static void connectivity(ClassLoader classLoader){
+
+        XposedHelpers.findAndHookMethod("android.net.ConnectivityManager", classLoader, "isConnected", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+
+                param.setResult(true);
+
             }
         });
     }
