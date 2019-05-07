@@ -89,7 +89,7 @@ public class WeChatWork {
 
                 //5c:c9:99:34:48:f0
 
-                param.setResult(ssid);
+                param.setResult(bssid);
             }
         });
 
@@ -104,7 +104,7 @@ public class WeChatWork {
             }
         });
 
-        XposedHelpers.findAndHookMethod("android.net.NetworkInfo", classLoader, "getNetworkType", new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("android.telephony.TelephonyManager", classLoader, "getNetworkType", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
@@ -117,12 +117,15 @@ public class WeChatWork {
 
     private static void connectivity(ClassLoader classLoader){
 
-        XposedHelpers.findAndHookMethod("android.net.ConnectivityManager", classLoader, "isConnected", new XC_MethodHook() {
+        XposedHelpers.findAndHookMethod("android.net.ConnectivityManager", classLoader, "getNetworkInfo",int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 super.afterHookedMethod(param);
-
-                param.setResult(true);
+                int type = (int) param.args[0];
+                if (type == 1){
+                    Object obj = param.getResult();
+                    XposedHelpers.setObjectField(obj,"mState", NetworkInfo.State.CONNECTED);
+                }
 
             }
         });
